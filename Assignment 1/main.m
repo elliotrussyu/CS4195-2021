@@ -46,5 +46,13 @@ lambda1 = spectral_radius(A,1);
 % 8)
 miu_m2 = algebraic_connectivity(A,1); 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% 9)
+% rec = infection(ds,N);
+load('rec_9.mat')
+time = 0:1:57791;
+std = sqrt(var(rec));
+rec_p = mean(rec);
+plot(time,rec_p);
 
 toc
