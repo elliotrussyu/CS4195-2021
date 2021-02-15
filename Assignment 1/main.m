@@ -29,14 +29,22 @@ Rho_D = deg_assortivity(A,1);
 [C_G,C_i] = clustering_coeff(A,1);
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % 5)
-G = graph(A);
-d = distances(G);
-avg_hopcount = mean(d);
-network_diameter = max(d);
+[avg_hopcount,network_diameter] = hopcount(A,1);
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % 6)
+link_p = L/((N*(N-1))/2);
+A_ER_rand = ER_random_graph_gen(link_p,N);
+ER_hc = hopcount(A_ER_rand);
+C_ER = clustering_coeff(A_ER_rand);
+disp('The small-world property determination:')
+disp(['AVG_hopcount: OUR_NETWORK: ' num2str(avg_hopcount) ' ER_RAND_GRAPH: ' num2str(ER_hc)])
+disp(['Clustering_COEFF: OUR_NETWORK: ' num2str(C_G) ' ER_RAND_GRAPH: ' num2str(C_ER)])
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % 7)
+lambda1 = spectral_radius(A,1); 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % 8)
+miu_m2 = algebraic_connectivity(A,1); 
+
+
 toc
