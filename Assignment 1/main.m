@@ -1,3 +1,11 @@
+% Feb. 16th 2021
+% CS4195 Modeling and Data Analysis in Complex Networks
+% Assignment 1
+% Authors: 
+%           Hanshu Yu 4907787,
+%           Songlei Fang     ,
+%           Ying Jin         .
+
 tic
 clear all
 close all
