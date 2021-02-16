@@ -58,33 +58,43 @@ miu_m2 = algebraic_connectivity(A,1);
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % 8)
 disp('Q8:')
+[A_w,weights] = weighted_A_gen(ds,N);
+figure
+histogram(weights,100) %Perhaps find a better cell num for the histogram here!
+xlabel('Link weights');
+ylabel('Number of links');
+title('Link weight distribution');
 %% PART B
 disp('PART B')
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % 9)
-% rec = infection(ds,N); 
+disp('Q9:')
+% rec9 = infection(ds,N); 
 % The upper line takes around 15 min to run on a i7 cpu laptop
-% The result is recorded in an array named 'rec' in file 'rec_9.mat'
+% The result is recorded in an array named 'rec9' in file 'rec_9.mat'
 load('rec_9.mat')
 time = 0:1:57791;
-std = sqrt(var(rec));
-rec_p = mean(rec);
-% figure
-% errorbar(time,rec_p,std)
-% This errorbar graph looks terrible! I don't know if I'm wrong or not.
+std = sqrt(var(rec9));
+rec_p = mean(rec9);
+figure
+errorbar(time,rec_p,std)
+title('The average number of infected nodes E[I(t)] (with errorbar)')
+xlabel('Time (s)')
+ylabel('Number of infected nodes')
+% This errorbar graph looks terrible!
 figure
 subplot(2,1,1)
 plot(time,rec_p)
-title('The average number of infected nodes E[I(t)]')
+title('The average number of infected nodes E[I(t)] (without errorbar)')
 xlabel('Time (s)')
 ylabel('Number of infected nodes')
 subplot(2,1,2)
 plot(time,std)
 title('The standard deviation plot')
 xlabel('Time (s)')
-ylabel('Number of infected nodes')
+ylabel('Standard deviation')
 
-%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 % 10)
 
 toc
