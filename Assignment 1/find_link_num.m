@@ -1,5 +1,6 @@
 function L = find_link_num(data,di)
-
+%Given the data of the temporal network
+%Find the number of links
 if nargin == 1
     di = 0;
 end

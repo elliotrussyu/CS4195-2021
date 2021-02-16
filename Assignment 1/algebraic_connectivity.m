@@ -1,4 +1,6 @@
 function miu_N_1 = algebraic_connectivity(A,di)
+%Given the adjacency matrix of a graph
+%Find the algebraic connectivity
     if nargin == 1
         di = 0;
     end

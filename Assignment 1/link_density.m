@@ -1,4 +1,6 @@
 function p = link_density(N,L,di)
+%Given the number of nodes, number of links,
+%compute the link density of the graph
 if nargin == 2
     di = 0;
 end

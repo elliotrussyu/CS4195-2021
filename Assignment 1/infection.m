@@ -1,4 +1,9 @@
 function rec = infection(data,N)
+%Given the data of the temporal network 
+%and the number of iterations we want to run
+%Conduct the Susceptible-Infected process starting from one node
+%Returns the process record in which records 
+%the number of infected nodes at each time stamp
 T = max(data(:,3));
 rec = zeros(N,T+1);
 for i = 1:N

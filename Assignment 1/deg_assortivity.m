@@ -1,4 +1,6 @@
 function RHO_D = deg_assortivity(A,di)
+%Given the adjacency matrix of a graph
+%Find the assortivity(degree correlation)
     if nargin == 1
         di = 0;
     end

@@ -1,4 +1,7 @@
 function [C_G,C_i] = clustering_coeff(A,di)
+%Given the adjacency matrix of a graph
+%Find the clustering coefficient C_G of the graph 
+%Also store the clustering coefficient of each node in C_i
     if nargin == 1
         di = 0;
     end
