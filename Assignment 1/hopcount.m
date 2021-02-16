@@ -1,4 +1,6 @@
 function [hc,d] = hopcount(A,di)
+%Given the adjacency matrix of the graph
+%Find the average hopcount and the diameter of the network
     if nargin == 1
         di = 0;
     end

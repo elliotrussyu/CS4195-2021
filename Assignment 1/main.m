@@ -48,11 +48,18 @@ miu_m2 = algebraic_connectivity(A,1);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % 9)
-% rec = infection(ds,N);
+% rec = infection(ds,N); %takes around 15 min to run on a i7 cpu laptop
 load('rec_9.mat')
 time = 0:1:57791;
 std = sqrt(var(rec));
 rec_p = mean(rec);
+figure
+subplot(2,1,1)
 plot(time,rec_p);
+subplot(2,1,2)
+plot(time,std)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% 9)
 
 toc

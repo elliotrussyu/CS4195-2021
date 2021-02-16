@@ -1,4 +1,7 @@
 function A = ER_random_graph_gen(link_p,N)
+%Given a link density link_p and the number of nodes N
+%Generate a Erdos-Renyi Random Graph
+%Output the corresponding adjacency matrix of that ER random graph
     bits = N*(N+1)/2;
     rand_seq = rand(bits,1);
     

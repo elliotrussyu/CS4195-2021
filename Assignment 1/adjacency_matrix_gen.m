@@ -1,5 +1,7 @@
 function [A,nodes,Deg,links] = adjacency_matrix_gen(data,di)
-
+%Given the data of the temproal network
+%Find the adjacency matrix A, list of nodes, degrees of each node,
+%and list of links.
 if nargin == 1
     di = 0;
 end

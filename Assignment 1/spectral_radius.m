@@ -1,4 +1,6 @@
 function l1 = spectral_radius(A,di)
+%given the adjacency matrix, 
+%find the spectral radius of the graph
     if nargin == 1
         di = 0;
     end
