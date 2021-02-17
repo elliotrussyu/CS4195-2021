@@ -23,7 +23,7 @@ load('data.mat');
 %in convenience of the code users I introduce a flag
 %'plot_flag' when set to 1 we do the plotting. 
 %When set to zero we skip the plotting process
-plot_flag = 0;
+plot_flag = 1;
 
 %% PART A
 disp('PART A')
@@ -36,7 +36,9 @@ p = link_density(N,L,1);
 E_D = avg_degree(N,L,1);
 [A,nodes,Deg,links] = adjacency_matrix_gen(ds);
 Var_D = var(Deg);
+std = sqrt(Var_D);
 disp(['The degree variance Var[D] is ', num2str(Var_D)])
+disp(['The standard deviation of the degree is ', num2str(std)])
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % 2)
 % disp('Q2:')
@@ -51,6 +53,7 @@ end
 % 3)
 disp('Q3:')
 Rho_D = deg_assortivity(A,1);
+% preference for a network's node to attach to others that have similar degree
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % 4)
 disp('Q4:')
