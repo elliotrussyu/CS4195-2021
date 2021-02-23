@@ -23,7 +23,7 @@ load('data.mat');
 %in convenience of the code users I introduce a flag
 %'plot_flag' when set to 1 we do the plotting. 
 %When set to zero we skip the plotting process
-plot_flag = 1;
+plot_flag = 0;
 
 %% PART A
 disp('PART A')
@@ -83,7 +83,9 @@ miu_m2 = algebraic_connectivity(A,1);
 [A_w,weights] = weighted_A_gen(ds,N);
 if plot_flag == 1
     figure
-    histogram(weights,100) %Perhaps find a better cell num for the histogram here!
+    histogram(weights(:,1),50) %Perhaps find a better cell num for the histogram here!
+%     set(gca,'XScale','log')
+    set(gca,'YScale','log')
     xlabel('Link weights');
     ylabel('Number of links');
     title('Link weight distribution');
@@ -130,16 +132,32 @@ R = influence_ranking(:,1);
 % 11)
 % disp('Q11:')
 Str = strength(A_w);
+l = closeness(A);
+ec = eigenvector_centrality(A);
+% ec2 = eigenvector_centrality(A_w);
 [~,D] = sort(Deg,'descend');
 [~,S] = sort(Str,'descend');
+[~,Cl] = sort(C_i,'descend');
+[~,L] = sort(l,'descend');
+[~,EC] = sort(ec,'descend');
+% [~,EC2] = sort(ec2,'descend');
+
 
 fraction = 0.05:0.05:0.5;
 rD = zeros(length(fraction),1);
 rS = zeros(length(fraction),1);
+rCl = zeros(length(fraction),1);
+rL = zeros(length(fraction),1);
+rEC = zeros(length(fraction),1);
+% rEC2 = zeros(length(fraction),1);
 for f = fraction
     in = int16(f/0.05);
     rD(in) = top_f_recognition_rate(R,D,f);
     rS(in) = top_f_recognition_rate(R,S,f);
+    rCl(in) = top_f_recognition_rate(R,Cl,f);
+    rL(in) = top_f_recognition_rate(R,L,f);
+    rEC(in) = top_f_recognition_rate(R,EC,f);
+%     rEC2(in) = top_f_recognition_rate(R,EC2,f);
 end
 
 if plot_flag == 1
@@ -147,11 +165,86 @@ if plot_flag == 1
     hold on
     plot(fraction,rS)
     plot(fraction,rD)
+    plot(fraction,rCl)
+    plot(fraction,rL)
+    plot(fraction,rEC)
+%     plot(fraction,rEC2)
     hold off
-    legend('r_S','r_D')
+    legend('Strength','Degree','Clustering Coeff','closeness','Eigenvector Centrality')%'Weighted Eig Centrality'
+    xlabel('Fraction')
+    ylabel('Top fraction recogintion rate')
 end
 %%%%%%%%%%%%%%%%%%%%%%%%
 % 12)
-% disp('Q12:')
+% disp('Q12:') See above in Q11
+%%%%%%%%%%%%%%%%%%%%%%%%
+% 13)
+% disp('Q13:')
+rt = reach_time(ds,N);
+rt = [99999;rt];
+[~,r_t] = sort(rt,'ascend');
+% rec_T = infection2_influence(ds,N,r_t,0.8); %Takes around 1 min to run
+load('rec_T.mat')
+[~,RT] = sort(rec_T,'ascend');
+% !!!!!!!!!!!!!!!!!
+% R'(RT) and R are eactly the same. 
+% We found that node 1 is never sending only receiving. 
+% But this has no effect on the ranking of R'.
+% Further exploring the dataset, we find at time stamp 1720,
+% there are 135 links operating in the network. Before that there were 122
+% nodes appeared, and at 1720s, 13 new nodes appeared, which made it over
+% 80% of the total node num.
+%
+% dbefore = unique(ds(1:find(ds(:,3)==1720)-1,2));
+% d1720 = unique(ds(ds(:,3) == 1720,2));
+% dnew1720 = [];
+% for i = 1:length(d1720)
+%     if isempty(find(dbefore == d1720(i))) == 1
+%         dnew1720 = [dnew1720;d1720(i)];
+%     end
+% end
+% length(dnew1720)
+% !!!!!!!!!!!!!!!!!
+
+%
+% fraction = 0.05:0.05:0.5;
+% rD = zeros(length(fraction),1);
+% rS = zeros(length(fraction),1);
+% rCl = zeros(length(fraction),1);
+% rL = zeros(length(fraction),1);
+% rEC = zeros(length(fraction),1);
+% % rEC2 = zeros(length(fraction),1);
+% for f = fraction
+%     in = int16(f/0.05);
+%     rD(in) = top_f_recognition_rate(RT,D,f);
+%     rS(in) = top_f_recognition_rate(RT,S,f);
+%     rCl(in) = top_f_recognition_rate(RT,Cl,f);
+%     rL(in) = top_f_recognition_rate(RT,L,f);
+%     rEC(in) = top_f_recognition_rate(RT,EC,f);
+% %     rEC2(in) = top_f_recognition_rate(RT,EC2,f);
+% end
+% 
+% if plot_flag == 1
+%     figure
+%     hold on
+%     plot(fraction,rS)
+%     plot(fraction,rD)
+%     plot(fraction,rCl)
+%     plot(fraction,rL)
+%     plot(fraction,rEC)
+% %     plot(fraction,rEC2)
+%     hold off
+%     legend('Strength','Degree','Clustering Coeff','closeness','Eigenvector Centrality')%'Weighted Eig Centrality'
+%     xlabel('Fraction')
+%     ylabel('Top fraction recogintion rate')
+% end
+
+
+%% PART C
+disp('PART C')
+
+
+
+
 
 toc

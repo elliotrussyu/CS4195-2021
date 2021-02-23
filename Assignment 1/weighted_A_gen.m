@@ -10,7 +10,14 @@ function [A_weighted,link_weight_list] = weighted_A_gen(ds,N)
         A_w(x,y) = A_w(x,y) + 1;
     end
     A_weighted = A_w + A_w';
-    link_weight_list = reshape(A_w,[],1);
-    link_weight_list(link_weight_list == 0) = [];
+    link_weight_list =[];
+    for i = 1:N
+        for j = 1:N
+            w0 = A_w(i,j);
+            if w0 ~= 0
+                link_weight_list = [link_weight_list; w0,i,j];
+            end
+        end
+    end
     
 end
