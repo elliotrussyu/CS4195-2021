@@ -132,14 +132,16 @@ R = influence_ranking(:,1);
 Str = strength(A_w);
 [~,D] = sort(Deg,'descend');
 [~,S] = sort(Str,'descend');
-
+[~,Cl] = sort(C_i,'descend');
 fraction = 0.05:0.05:0.5;
 rD = zeros(length(fraction),1);
 rS = zeros(length(fraction),1);
+rCl = zeros(length(fraction),1);
 for f = fraction
     in = int16(f/0.05);
     rD(in) = top_f_recognition_rate(R,D,f);
     rS(in) = top_f_recognition_rate(R,S,f);
+    rCl(in) = top_f_recognition_rate(R,Cl,f);
 end
 
 if plot_flag == 1
@@ -147,8 +149,11 @@ if plot_flag == 1
     hold on
     plot(fraction,rS)
     plot(fraction,rD)
+    plot(fraction,rCl)
     hold off
-    legend('r_S','r_D')
+    legend('r_S','r_D','r_Cl')
+    xlabel('Fraction')
+    ylabel('Top fraction recogintion rate')
 end
 %%%%%%%%%%%%%%%%%%%%%%%%
 % 12)
