@@ -83,7 +83,9 @@ miu_m2 = algebraic_connectivity(A,1);
 [A_w,weights] = weighted_A_gen(ds,N);
 if plot_flag == 1
     figure
-    histogram(weights,100) %Perhaps find a better cell num for the histogram here!
+    histogram(weights(:,1),max(weights(:,1))) %Perhaps find a better cell num for the histogram here!
+    set(gca,'XScale','log')
+    set(gca,'YScale','log')
     xlabel('Link weights');
     ylabel('Number of links');
     title('Link weight distribution');
