@@ -242,9 +242,74 @@ load('rec_T.mat')
 
 %% PART C
 disp('PART C')
+%%%%%%%%%%%%%%%%%%%%%%%%
+% 14)
+% disp('Q14:')
 
+% ds2 = reshuffle_time_stamp(ds);
+% ds3 = re_assign_links_to_time_stamp(links,ds(:,3));
+% 
+% int_arr_t1 = inter_arrival_time(links,ds);
+% int_arr_t2 = inter_arrival_time(links,ds2);
+% int_arr_t3 = inter_arrival_time(links,ds3);
 
+load('ds2.mat')
+load('ds3.mat')
+load('int_arr_t1.mat')
+load('int_arr_t2.mat')
+load('int_arr_t3.mat')
+if plot_flag == 1
+    figure
+    histogram(int_arr_t1,20)
+    figure
+    histogram(int_arr_t2,20)
+    figure
+    histogram(int_arr_t3,20)
+end
+%%%%%%%%%%%%%%%%%%%%%%%%
+% 15)
+% disp('Q15:')
 
+% rec2 = infection(ds2,N); 
+% rec3 = infection(ds3,N);
+load('rec2.mat')
+load('rec3.mat')
+time = 0:1:57791;
+std2 = sqrt(var(rec2));
+rec_p2 = mean(rec2);
+std3 = sqrt(var(rec3));
+rec_p3 = mean(rec3);
+if plot_flag == 1
+    figure
+    subplot(2,1,1)
+    plot(time,rec_p2)
+    title('The average number of infected nodes E[I(t)] of G_2')
+    xlabel('Time (s)')
+    ylabel('Number of infected nodes')
+    subplot(2,1,2)
+    plot(time,std2)
+    title('The standard deviation plot')
+    xlabel('Time (s)')
+    ylabel('Standard deviation')
+    figure
+    subplot(2,1,1)
+    plot(time,rec_p3)
+    title('The average number of infected nodes E[I(t)] of G_3')
+    xlabel('Time (s)')
+    ylabel('Number of infected nodes')
+    subplot(2,1,2)
+    plot(time,std3)
+    title('The standard deviation plot')
+    xlabel('Time (s)')
+    ylabel('Standard deviation')
+end
+% figure
+% hold on
+% plot(time,rec_p)
+% plot(time,rec_p2)
+% plot(time,rec_p3)
+% legend('1','2','3')
+% hold off
 
 
 toc
