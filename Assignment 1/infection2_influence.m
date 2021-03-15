@@ -38,7 +38,7 @@ for i = 1:N
         for p = 1:infected
             if isempty(find(M == bad_node(p), 1)) == 0
                 rec(i) = t;
-                really= 1;
+                really = 1;
                 c =1;
                 break
             end
@@ -49,7 +49,7 @@ for i = 1:N
     end
     
     if really == 0
-        rec = T+1;
+        rec(i) = T+1;
     end
 end
 

@@ -30,14 +30,42 @@ for i = 1:s(1)
     end
 end
 
+
+
+
 [B,I] = sort(time);
 R = [I,B];
+%New
+uni = unique(I(I<=s(2)));
+for i = 1:length(uni)
+    ind = find(I == uni(i));
+    It = I(ind);
+    Bt = B(ind);
+    lenn = length(ind);
+    temp = zeros(lenn,1);
+    for j = 1:length(Bt)
+        sum = 0;
+        res = rec(j,:);
+        for k = 1:167
+            cum0 = find(res == k,1);
+            if isempty(cum0) == 0
+                cum = cum0;
+            end
+            sum = sum + cum;
+        end
+        temp(j) = sum;
+    end
+    [~,inew]=sort(temp);
+    I(ind) = It(inew);
+    B(ind) = Bt(inew);
+end
+%New
 
 weak_ind = B>s(2);
-if isempty(weak_ind) == 0
+if isempty(find(weak_ind,1)) == 0
     weak_nodes = I(weak_ind);
     final_infection_number = rec(weak_nodes,end);
-    [~,I2] = sort(final_infection_number);
+    [~,I2] = sort(final_infection_number,'descend');
     weak_nodes_ranked = weak_nodes(I2);
     R(end-length(weak_nodes)+1:end,1) = weak_nodes_ranked; 
 end

@@ -23,7 +23,7 @@ load('data.mat');
 %in convenience of the code users I introduce a flag
 %'plot_flag' when set to 1 we do the plotting. 
 %When set to zero we skip the plotting process
-plot_flag = 0;
+plot_flag = 1;
 
 %% PART A
 disp('PART A')
@@ -126,7 +126,7 @@ end
 % 10)
 % disp('Q10:')
 threshold = 0.8;
-influence_ranking = seed_node_influence_rank(rec9,N,threshold);
+influence_ranking = seed_node_influence_rank(rec3,N,threshold);
 R = influence_ranking(:,1);
 %%%%%%%%%%%%%%%%%%%%%%%%
 % 11)
@@ -134,6 +134,9 @@ R = influence_ranking(:,1);
 Str = strength(A_w);
 l = closeness(A);
 ec = eigenvector_centrality(A);
+DD = Deg./N;
+SS = Str./max(Str);
+DS = SS+DD;
 % ec2 = eigenvector_centrality(A_w);
 [~,D] = sort(Deg,'descend');
 [~,S] = sort(Str,'descend');
@@ -141,7 +144,7 @@ ec = eigenvector_centrality(A);
 [~,L] = sort(l,'descend');
 [~,EC] = sort(ec,'descend');
 % [~,EC2] = sort(ec2,'descend');
-
+[~,DDSS] =sort(DS,'descend');
 
 fraction = 0.05:0.05:0.5;
 rD = zeros(length(fraction),1);
@@ -149,6 +152,7 @@ rS = zeros(length(fraction),1);
 rCl = zeros(length(fraction),1);
 rL = zeros(length(fraction),1);
 rEC = zeros(length(fraction),1);
+rDDSS = zeros(length(fraction),1);
 % rEC2 = zeros(length(fraction),1);
 for f = fraction
     in = int16(f/0.05);
@@ -157,6 +161,7 @@ for f = fraction
     rCl(in) = top_f_recognition_rate(R,Cl,f);
     rL(in) = top_f_recognition_rate(R,L,f);
     rEC(in) = top_f_recognition_rate(R,EC,f);
+    rDDSS(in) = top_f_recognition_rate(R,DDSS,f);
 %     rEC2(in) = top_f_recognition_rate(R,EC2,f);
 end
 
@@ -168,9 +173,10 @@ if plot_flag == 1
     plot(fraction,rCl)
     plot(fraction,rL)
     plot(fraction,rEC)
+    plot(fraction,rDDSS)
 %     plot(fraction,rEC2)
     hold off
-    legend('Strength','Degree','Clustering Coeff','closeness','Eigenvector Centrality')%'Weighted Eig Centrality'
+    legend('Strength','Degree','Clustering Coeff','closeness','Eigenvector Centrality','DS')%'Weighted Eig Centrality'
     xlabel('Fraction')
     ylabel('Top fraction recogintion rate')
 end
@@ -187,13 +193,14 @@ rt = [99999;rt];
 load('rec_T.mat')
 [~,RT] = sort(rec_T,'ascend');
 % !!!!!!!!!!!!!!!!!
-% R'(RT) and R are eactly the same. 
+% R'(RT) and R are the same. 
 % We found that node 1 is never sending only receiving. 
 % But this has no effect on the ranking of R'.
 % Further exploring the dataset, we find at time stamp 1720,
-% there are 135 links operating in the network. Before that there were 122
+% there are 135 links operating in the network. Before that there were 123
 % nodes appeared, and at 1720s, 13 new nodes appeared, which made it over
-% 80% of the total node num.
+% 80% of the total node num. These 136 nodes are exactly the top 136 nodes
+% in the influence ranking R. 
 %
 % dbefore = unique(ds(1:find(ds(:,3)==1720)-1,2));
 % d1720 = unique(ds(ds(:,3) == 1720,2));
@@ -206,38 +213,41 @@ load('rec_T.mat')
 % length(dnew1720)
 % !!!!!!!!!!!!!!!!!
 
-%
-% fraction = 0.05:0.05:0.5;
-% rD = zeros(length(fraction),1);
-% rS = zeros(length(fraction),1);
-% rCl = zeros(length(fraction),1);
-% rL = zeros(length(fraction),1);
-% rEC = zeros(length(fraction),1);
-% % rEC2 = zeros(length(fraction),1);
-% for f = fraction
-%     in = int16(f/0.05);
-%     rD(in) = top_f_recognition_rate(RT,D,f);
-%     rS(in) = top_f_recognition_rate(RT,S,f);
-%     rCl(in) = top_f_recognition_rate(RT,Cl,f);
-%     rL(in) = top_f_recognition_rate(RT,L,f);
-%     rEC(in) = top_f_recognition_rate(RT,EC,f);
-% %     rEC2(in) = top_f_recognition_rate(RT,EC2,f);
-% end
-% 
-% if plot_flag == 1
-%     figure
-%     hold on
-%     plot(fraction,rS)
-%     plot(fraction,rD)
-%     plot(fraction,rCl)
-%     plot(fraction,rL)
-%     plot(fraction,rEC)
-% %     plot(fraction,rEC2)
-%     hold off
-%     legend('Strength','Degree','Clustering Coeff','closeness','Eigenvector Centrality')%'Weighted Eig Centrality'
-%     xlabel('Fraction')
-%     ylabel('Top fraction recogintion rate')
-% end
+
+fraction = 0.05:0.05:0.5;
+rD = zeros(length(fraction),1);
+rS = zeros(length(fraction),1);
+rCl = zeros(length(fraction),1);
+rL = zeros(length(fraction),1);
+rEC = zeros(length(fraction),1);
+rR = zeros(length(fraction),1);
+% rEC2 = zeros(length(fraction),1);
+for f = fraction
+    in = int16(f/0.05);
+    rD(in) = top_f_recognition_rate(RT,D,f);
+    rS(in) = top_f_recognition_rate(RT,S,f);
+    rCl(in) = top_f_recognition_rate(RT,Cl,f);
+    rL(in) = top_f_recognition_rate(RT,L,f);
+    rEC(in) = top_f_recognition_rate(RT,EC,f);
+    rR(in) = top_f_recognition_rate(RT,R,f);
+%     rEC2(in) = top_f_recognition_rate(RT,EC2,f);
+end
+
+if plot_flag == 1
+    figure
+    hold on
+    plot(fraction,rS)
+    plot(fraction,rD)
+    plot(fraction,rCl)
+    plot(fraction,rL)
+    plot(fraction,rEC)
+    plot(fraction,rR)
+%     plot(fraction,rEC2)
+    hold off
+    legend('Strength','Degree','Clustering Coeff','closeness','Eigenvector Centrality','R')%'Weighted Eig Centrality'
+    xlabel('Fraction')
+    ylabel('Top fraction recogintion rate')
+end
 
 
 %% PART C
@@ -303,13 +313,40 @@ if plot_flag == 1
     xlabel('Time (s)')
     ylabel('Standard deviation')
 end
-% figure
-% hold on
-% plot(time,rec_p)
-% plot(time,rec_p2)
-% plot(time,rec_p3)
-% legend('1','2','3')
-% hold off
-
-
+figure
+hold on
+plot(time,rec_p)
+plot(time,rec_p2)
+plot(time,rec_p3)
+legend('1','2','3')
+hold off
+rr = zeros(57792,167); %record
+rrr = zeros(1,57792); %New discovered node
+rrrr = zeros(1,57792); % 
+ttt = zeros(57792,167); %Appeared nodes at each time stamp
+appeared = [0];
+jj = 0;
+for i = 1:57792
+    ikkk = find(ds3(:,3) == i);
+    rrrr(i) = length(ikkk);
+    tt = unique([ds3(ikkk,1);ds3(ikkk,2)]);
+    l0 = length(appeared);
+    appeared = sort(unique([appeared,tt']));
+    if length(appeared) >= 85 && jj == 0
+        jj = 1;
+        jjj = appeared;
+        tttt = i;
+    end
+    rrr(i) = length(appeared) - l0; 
+    ttt(i,1:length(tt)) = tt;        
+end
+% plot(rrrr)
+% plot(rrr)
+rc = zeros(1,length(rrr));
+cc = 0;
+for i = 1:57792
+    cc = cc + rrr(i);
+    rc(i) = cc;
+end
+ll = unique([R(1:84);jjj(2:end)']);
 toc
