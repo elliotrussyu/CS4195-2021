@@ -3,8 +3,8 @@
 % Assignment 1
 % Authors: 
 %           Hanshu Yu 4907787,
-%           Songlei Fang     ,
-%           Ying Jin         .
+%           Songlei Fang 5233038,
+%           Ying Jin 5184657.
 
 % Please use the latest version of MATLAB, using an older version could
 % result in some unexpected errors.

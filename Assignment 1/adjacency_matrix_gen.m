@@ -11,11 +11,11 @@ nodes = sort(nodes,'ascend');
 links = unique(data(:,1:2),'rows');
 start = links(:,1);
 endn = links(:,2);
-% [~,I] = sort(links(:,1),'ascend');
-% 
-% links_sorted = [start(I),endn(I)];
-% begin = start(I);
-% stop = endn(I);
+% % [~,I] = sort(links(:,1),'ascend');
+% % 
+% % links_sorted = [start(I),endn(I)];
+% % begin = start(I);
+% % stop = endn(I);
 
 A = zeros(length(nodes));
 Deg = zeros(length(nodes),1);
