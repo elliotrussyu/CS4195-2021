@@ -1,14 +1,33 @@
+% Mar. 23th 2021
+% CS4195 Modeling and Data Analysis in Complex Networks
+% Final Project
+% Authors: 
+%           Hanshu Yu 4907787,
+%           Songlei Fang 5233038,
+%           Ying Jin 5184657,
+%           Xiaowei Duan  ,
+%           Chang Ye  .
+
+% Please use the latest version of MATLAB, using an older version could
+% result in some unexpected errors.
+
+tic
+clear all
+close all
+clc
+%% Add Path of Necessary Tools
 % Determine where your m-file's folder is.
 folder = fileparts(which(mfilename)); 
 % Add that folder plus all subfolders to the path.
 addpath(genpath(folder));
-
+%% Read Data
 fileName1 = 'events_World_Cup.json'; % filename in JSON extension
 str1 = fileread(fileName1); % dedicated for reading files as text
 data1 = jsondecode(str1); % Using the jsondecode function to parse JSON from string
 fileName2 = 'matches_World_Cup.json'; % filename in JSON extension
 str2 = fileread(fileName2); % dedicated for reading files as text
 data0 = jsondecode(str2); % Using the jsondecode function to parse JSON from string
+%% Data Pre-processing
 data2 = data1([data1.matchId] == 2057954,:);
 
 %Find 1 half finish time
@@ -33,12 +52,14 @@ for i = 1:length(replace1)
     data(i).teamId = replace2(i);
 end
 playernum = [length(find(players_reference(:,2) == 1)),length(find(players_reference(:,2) == 2))];
-
+%% Initialization 
 passgraph = [];
 loseballgraph = [];
 duelgraph = [];
 duel_state_ini = [0,0,0];
 duel_flag = 0;
+
+%% (Spatial-)Temporal Network Construction
 for i = 1:size(data,1)
     item = data(i);
     
@@ -74,10 +95,11 @@ for i = 1:size(data,1)
        
     end
 end
+%% Quality Guarantee
 %Check bad data in the duel graph (duel between teammates)
 chk = (duelgraph(:,1) <= playernum(1) & duelgraph(:,2)>playernum(1)) | (duelgraph(:,2) <= playernum(1) & duelgraph(:,1) > playernum(1));
 duelgraph = duelgraph(chk,:);
-
+%% Interpretation
 graph_interpretation
 % keep = [];
 % for i = 1:500
@@ -89,3 +111,4 @@ graph_interpretation
 %     end
 % end
 % dd = data1(keep,:);
+toc

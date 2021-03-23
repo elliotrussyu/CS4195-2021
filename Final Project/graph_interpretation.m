@@ -13,9 +13,9 @@ Rho_D = deg_assortivity(A,1);
 lambda1 = spectral_radius(A,1); 
 miu_m2 = algebraic_connectivity(A,1);
 [A_w,weights] = weighted_A_gen(duelgraph,N);
-
+%% Plotting
 G = graph(A_w);
-p = plot(G)
+p = plot(G);
 p.MarkerSize = 7;
 p.LineWidth = weights(:,3)/10;
 p.XData = [ones(1,14), ones(1,14)*10];
