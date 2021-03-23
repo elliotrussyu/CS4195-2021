@@ -1,4 +1,8 @@
-addpath('events','matches')
+% Determine where your m-file's folder is.
+folder = fileparts(which(mfilename)); 
+% Add that folder plus all subfolders to the path.
+addpath(genpath(folder));
+
 fileName1 = 'events_World_Cup.json'; % filename in JSON extension
 str1 = fileread(fileName1); % dedicated for reading files as text
 data1 = jsondecode(str1); % Using the jsondecode function to parse JSON from string
