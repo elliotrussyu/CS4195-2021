@@ -1,6 +1,3 @@
-addpath('tools')
-
-
 N = size(players,1);
 L = find_link_num(duelgraph,1);
 p = link_density(N,L,1);
