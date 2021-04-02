@@ -1,9 +1,9 @@
-function E = entropy(A)
+function E = entropy(D)
 
-%Given the adjacency matrix of a graph
+%Given the degree of each node
 %Find the entropy
 
-A(A==0) = [];
-E = -sum(A .* log2(A));
+D1=D/sum(D);
+E1 = -sum(D1 .* log2(D1));
 
 end 
