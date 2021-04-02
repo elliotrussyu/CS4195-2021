@@ -1,9 +1,9 @@
-function E = entropy(D)
+function E = entropy(Deg)
 
 %Given the degree of each node
 %Find the entropy
 
-D1=D/sum(D);
-E1 = -sum(D1 .* log2(D1));
+D=Deg/sum(Deg);
+E = -sum(D .* log2(D));
 
 end 
