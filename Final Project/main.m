@@ -52,6 +52,13 @@ for i = 1:length(replace1)
     data(i).teamId = replace2(i);
 end
 playernum = [length(find(players_reference(:,2) == 1)),length(find(players_reference(:,2) == 2))];
+
+team1 = players_reference(players_reference(:,2)==1,3);
+team2 = players_reference(players_reference(:,2)==2,3);
+
+pos_team1 = player_pos(data,team1);
+pos_team2 = player_pos(data,team2);
+
 %% Initialization 
 passgraph = [];
 pass_state_ini = [0,0,0,0]; %Player1,Player2,timestamp,successful 1/fail 0
@@ -195,6 +202,9 @@ end
 %Check bad data in the duel graph (duel between teammates)
 chk = (duelgraph(:,1) <= playernum(1) & duelgraph(:,2)>playernum(1)) | (duelgraph(:,2) <= playernum(1) & duelgraph(:,1) > playernum(1));
 duelgraph = duelgraph(chk,:);
+
+passgraph = passgraph(passgraph(:,4)==1,:);
+
 %% Interpretation
 graph_interpretation
 % keep = [];
