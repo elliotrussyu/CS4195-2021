@@ -5,8 +5,8 @@
 %           Hanshu Yu 4907787,
 %           Songlei Fang 5233038,
 %           Ying Jin 5184657,
-%           Xiaowei Duan  ,
-%           Chang Ye  .
+%           Xiaowei Duan 5337593,
+%           Chang Ye 5219698.
 
 % Please use the latest version of MATLAB, using an older version could
 % result in some unexpected errors.
