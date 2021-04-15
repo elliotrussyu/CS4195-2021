@@ -20,26 +20,29 @@ tic
 clear all
 close all
 clc
+total_record_pass = [];
+total_record_duel = [];
+total_record_lose = [];
 %% Add Path of Necessary Tools
 % Determine where your m-file's folder is.
 folder = fileparts(which(mfilename)); 
 % Add that folder plus all subfolders to the path.
 addpath(genpath(folder));
-displayflag = 1;
-plotflag= 1;
+displayflag = 0;
+plotflag= 0;
 %% Read Data
-fileName1 = 'events_World_Cup.json'; % filename in JSON extension
+fileName1 = 'events_England.json'; % filename in JSON extension
 str1 = fileread(fileName1); % dedicated for reading files as text
 data1 = jsondecode(str1); % Using the jsondecode function to parse JSON from string
-fileName2 = 'matches_World_Cup.json'; % filename in JSON extension
+fileName2 = 'matches_England.json'; % filename in JSON extension
 str2 = fileread(fileName2); % dedicated for reading files as text
 data0 = jsondecode(str2); % Using the jsondecode function to parse JSON from string
 fileNamep = 'players.json'; % filename in JSON extension
 strp = fileread(fileNamep); % dedicated for reading files as text
 playerdata = jsondecode(strp); % Using the jsondecode function to parse JSON from string
 %% Data Pre-processing
-
-matchselect = 3;%This number should be from 1 to size(data0,1)
+for matc = 1:size(data0,1)
+matchselect = matc;%This number should be from 1 to size(data0,1)
 
 data2 = data1([data1.matchId] == data0(matchselect).wyId,:);
 
@@ -236,5 +239,51 @@ passgraph = passgraph(chk2,:);
 
 %% Interpretation
 graph_interpretation
-
+if data0(matchselect).winner ~= 0
+    if data0(matchselect).winner == teams(1,1)
+        score1 = 3;
+        score2 = 0;
+    else
+        score2 = 3;
+        score1 = 0;
+    end
+else
+    score1 = 1;
+    score2 = 1;
+end
+%Data record
+aaa = struct2cell(data0(matchselect).teamsData);
+if aaa{1}.teamId == teams(1,1)
+    goal1 = aaa{1}.score;
+    goal2 = aaa{2}.score;
+else
+    goal2 = aaa{2}.score;
+    goal1 = aaa{1}.score;
+end
+team1_record = [teams(1,1),data0(matchselect).wyId,score1,goal1,goal2...
+                pp1,E_Dp1,Var_Dp1,stdp1,Rho_Dp1,C_Gp1,...
+                avg_hopcountp1,network_diameterp1,lambda1p1,E_Sp1];
+team2_record = [teams(2,1),data0(matchselect).wyId,score2,goal2,goal1...
+                pp2,E_Dp2,Var_Dp2,stdp2,Rho_Dp2,C_Gp2,...
+                avg_hopcountp2,network_diameterp2,lambda1p2,E_Sp2];
+total_record_pass = [total_record_pass;team1_record;team2_record];
+%team,match,
+%w/d/l,goal,lose_goal
+%link density, avg degree, deg variance, standard
+%deviation, assortativity, clustering coeff, average hopcount, network
+%diameter, algebraic connectivity.
+total_record_duel = [total_record_duel;data0(matchselect).wyId,abs(goal1+goal2)...
+                pd,E_Dd,Var_Dd,stdd,Rho_Dd,C_Gd,...
+                avg_hopcountd,network_diameterd,lambda1d,E_Sd];
+total_record_lose = [total_record_lose;data0(matchselect).wyId,abs(goal1+goal2)...
+                    pl,E_Dl,Var_Dl,stdl,Rho_Dl,C_Gl,...
+                    avg_hopcountl,network_diameterl,lambda1l,E_Sl];
+%match,goal difference, 
+%link density, avg degree, deg variance, standard
+%deviation, assortativity, clustering coeff, average hopcount, network
+%diameter, algebraic connectivity.
+end
 toc
+corrcoef(total_record_pass(:,3:end))
+corrcoef(total_record_duel(:,2:end))
+corrcoef(total_record_lose(:,2:end))
