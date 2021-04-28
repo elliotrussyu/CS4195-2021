@@ -141,7 +141,7 @@ if plotflag == 1
     G = graph(A_w);
     p = plot(G,'NodeLabel',player_labels(1:playernum(1)));
     p.NodeFontWeight='bold';
-    p.MarkerSize = 12;
+    p.MarkerSize = 25;
     p.LineWidth = weights(:,1);
     p.XData = [pos_team1(:,2)'];
     p.YData = [pos_team1(:,3)'];

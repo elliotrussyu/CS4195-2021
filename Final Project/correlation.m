@@ -17,12 +17,13 @@
 % result in some unexpected errors.
 
 tic
-clear all
-close all
+% clear all
+% close all
 clc
 total_record_pass = [];
 total_record_duel = [];
 total_record_lose = [];
+
 %% Add Path of Necessary Tools
 % Determine where your m-file's folder is.
 folder = fileparts(which(mfilename)); 
@@ -31,10 +32,10 @@ addpath(genpath(folder));
 displayflag = 0;
 plotflag= 0;
 %% Read Data
-fileName1 = 'events_England.json'; % filename in JSON extension
+fileName1 = 'events_World_Cup.json'; % filename in JSON extension
 str1 = fileread(fileName1); % dedicated for reading files as text
 data1 = jsondecode(str1); % Using the jsondecode function to parse JSON from string
-fileName2 = 'matches_England.json'; % filename in JSON extension
+fileName2 = 'matches_World_Cup.json'; % filename in JSON extension
 str2 = fileread(fileName2); % dedicated for reading files as text
 data0 = jsondecode(str2); % Using the jsondecode function to parse JSON from string
 fileNamep = 'players.json'; % filename in JSON extension
@@ -284,6 +285,8 @@ total_record_lose = [total_record_lose;data0(matchselect).wyId,abs(goal1+goal2).
 %diameter, algebraic connectivity.
 end
 toc
-corrcoef(total_record_pass(:,3:end))
-corrcoef(total_record_duel(:,2:end))
-corrcoef(total_record_lose(:,2:end))
+cmP = corrcoef(total_record_pass(:,3:end));
+cmD = corrcoef(total_record_duel(:,2:end));
+cmL = corrcoef(total_record_lose(:,2:end));
+alles = [alles,cmP(:,1:3)];
+allest = [allest,cmD(:,1),cmL(:,1)];

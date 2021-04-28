@@ -39,7 +39,7 @@ strp = fileread(fileNamep); % dedicated for reading files as text
 playerdata = jsondecode(strp); % Using the jsondecode function to parse JSON from string
 %% Data Pre-processing
 
-matchselect = 3;%This number should be from 1 to size(data0,1)
+matchselect = 35;%This number should be from 1 to size(data0,1)
 
 data2 = data1([data1.matchId] == data0(matchselect).wyId,:);
 
